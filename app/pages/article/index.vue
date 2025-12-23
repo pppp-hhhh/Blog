@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-
 const {data: posts} = await useAsyncData(async () => {
   const items = await queryCollection('content')
       .all()

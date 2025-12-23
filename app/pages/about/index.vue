@@ -1,10 +1,12 @@
+<script lang="ts" setup>
+import head from "~~/public/头像.jpg"
+</script>
 <template>
-
   <div class="flex flex-col md:flex-row items-center justify-center gap-8 min-h-[80vh] w-full">
     <!-- 个人介绍 -->
     <div>
       <div class="flex gap-8 justify-center items-center">
-        <img :src="head" alt="头像" class="size-32 rounded-xl"/>
+        <img :src="head" alt="头像" class="size-40 rounded-xl"/>
         <div class="flex flex-col justify-center gap-3">
           <h1 class="text-4xl font-bold">
             无趣
@@ -20,6 +22,10 @@
           <div class="flex items-center gap-2">
             <Icon name="i-tabler-tools"/>
             <span> Full Stack</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <Icon name="material-symbols:mail-rounded"/>
+            <span> 2234668853@qq.com </span>
           </div>
         </div>
       </div>
@@ -93,9 +99,6 @@
   </div>
 </template>
 
-<script lang="ts" setup>
-import head from "~~/public/头像.jpg"
-</script>
 
 <style>
 

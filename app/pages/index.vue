@@ -38,6 +38,7 @@
 </template>
 <script lang="ts" setup>
 import head from "~~/public/头像.jpg"
+
 const input = ref('')
 
 const { data: posts } = await useAsyncData(async () => {
@@ -48,4 +49,5 @@ const { data: posts } = await useAsyncData(async () => {
   })
   return items
 }, { default: () => [] })
+
 </script>
