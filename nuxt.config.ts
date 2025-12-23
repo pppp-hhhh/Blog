@@ -31,5 +31,8 @@ export default defineNuxtConfig({
         }, database: {
             type: 'sqlite', filename: '/tmp/content.sqlite'
         }
-    }
+    }, routeRules: {
+        // Use client-side rendering for this route
+        '/client-side-route-example': {ssr: false},
+    },
 })
