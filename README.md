@@ -1,75 +1,39 @@
-# Nuxt Minimal Starter
+# Blog
 
-Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+## 技术栈
 
-## Setup
+- Nuxt 4 + Vue 3
+- Nuxt UI + TailwindCSS v4
+- Nuxt Content
+- SQLite (better-sqlite3)
+- Vercel (KV 存储)
 
-Make sure to install dependencies:
+## 安装方法
+
+### 环境要求
+
+- Node.js 18+
+- pnpm 9.0+
+
+### 安装步骤
+
+1. **克隆项目**
 
 ```bash
-# npm
-npm install
+git clone https://github.com/pppp-hhhh/Blog
+cd Blog
+```
 
-# pnpm
+2. **安装依赖**
+
+```bash
 pnpm install
-
-# yarn
-yarn install
-
-# bun
-bun install
 ```
 
-## Development Server
-
-Start the development server on `http://localhost:3000`:
+3.**启动开发服务器**
 
 ```bash
-# npm
-npm run dev
-
-# pnpm
 pnpm dev
-
-# yarn
-yarn dev
-
-# bun
-bun run dev
 ```
 
-## Production
-
-Build the application for production:
-
-```bash
-# npm
-npm run build
-
-# pnpm
-pnpm build
-
-# yarn
-yarn build
-
-# bun
-bun run build
-```
-
-Locally preview production build:
-
-```bash
-# npm
-npm run preview
-
-# pnpm
-pnpm preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
-```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+访问 `http://localhost:3000`
