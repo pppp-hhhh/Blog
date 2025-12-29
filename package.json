@@ -12,6 +12,7 @@
   "dependencies": {
     "@fontsource/material-icons": "^5.2.7",
     "@iconify-json/uil": "^1.2.3",
+    "@libsql/client": "^0.15.15",
     "@nuxt/content": "3.9.0",
     "@nuxt/fonts": "0.12.1",
     "@nuxt/icon": "^2.1.0",

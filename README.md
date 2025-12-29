@@ -37,3 +37,9 @@ pnpm dev
 ```
 
 访问 `http://localhost:3000`
+
+## 静态网站
+访问 https://wuqu-sooty.vercel.app/
+
+## SSR渲染
+访问 https://blog-q80tu1xdq-phs-projects-74eb0c0b.vercel.app/

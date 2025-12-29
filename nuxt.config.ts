@@ -2,7 +2,8 @@ import tailwindcss from "@tailwindcss/vite";
 
 export default defineNuxtConfig({
     compatibilityDate: '2025-07-15',
-    devtools: {enabled: true},
+    devtools: { enabled: true },
+    ssr: true,
     css: ['./app/assets/css/main.css'],
     fonts: {
         defaults: {
@@ -10,7 +11,7 @@ export default defineNuxtConfig({
             styles: ['normal', 'italic'],
             subsets: ['cyrillic-ext', 'cyrillic', 'greek-ext', 'greek', 'vietnamese', 'latin-ext', 'latin'],
         },
-        providers: {google: false, googleicons: false}
+        providers: { google: false, googleicons: false }
     },
     vite: {
         plugins: [tailwindcss(),],
@@ -28,11 +29,10 @@ export default defineNuxtConfig({
                     }
                 }
             }
-        }, database: {
-            type: 'sqlite', filename: '/tmp/content.sqlite'
+        },
+        database: {
+            type: 'libsql',
+            url: 'file:/tmp/content.db',
         }
-    }, routeRules: {
-        // Use client-side rendering for this route
-        '/client-side-route-example': {ssr: false},
-    },
+    }
 })

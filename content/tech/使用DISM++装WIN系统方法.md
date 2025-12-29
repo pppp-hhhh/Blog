@@ -3,36 +3,35 @@
 ## 第一步：下载DISM++和Windows镜像
 
 * **Dism++：https://github.com/Chuyu-Team/Dism-Multi-language**
-  ![Dism++下载](/1.png)
+  ![Dism++下载](https://cdn.jsdelivr.net/gh/pppp-hhhh/blogimage@main/1.png)
 * **Windows10镜像推荐前往[MSDN](https://msdn.itellyou.cn/)下载**
-  ![MSDN官网](/2.png)
+  ![MSDN官网](https://cdn.jsdelivr.net/gh/pppp-hhhh/blogimage@main/2.png)
 
 ## 第二步：使用DISM++安装Windows系统
 
 ### 打开DISM++
-
-![Dism++打开](/3.png)
+![Dism++打开](https://cdn.jsdelivr.net/gh/pppp-hhhh/blogimage@main/3.png)
 
 ### 点击左上角的文件，选择释放镜像（快捷键：Ctrl+N）
 
-![Dism++释放镜像](/4.png)
-![](7.png)
+![Dism++释放镜像](https://cdn.jsdelivr.net/gh/pppp-hhhh/blogimage@main/4.png)
+![Dism++释放镜像](https://cdn.jsdelivr.net/gh/pppp-hhhh/blogimage@main/7.png)
 
 ### 点击浏览，选中下载好的Windows镜像，点击确定
-![](/5.png)
+![Dism++释放镜像](https://cdn.jsdelivr.net/gh/pppp-hhhh/blogimage@main/5.png)
 
 ### 选择要安装的版本，点击确定
-![](9.png)
+![Dism++释放镜像](https://cdn.jsdelivr.net/gh/pppp-hhhh/blogimage@main/9.png)
 
 ### 选择安装位置，点击确定
 注意：安装位置选择你要安装的磁盘，一般是C盘
-![](/6.png)
+![Dism++释放镜像](https://cdn.jsdelivr.net/gh/pppp-hhhh/blogimage@main/6.png)
 
 ### 勾选添加引导和格式化
-![](8.png)
+![Dism++释放镜像](https://cdn.jsdelivr.net/gh/pppp-hhhh/blogimage@main/8.png)
 
 ### 点击确认，然后点击更多，选择你的启动磁盘
-![](10.png)
+![Dism++释放镜像](https://cdn.jsdelivr.net/gh/pppp-hhhh/blogimage@main/10.png)
 
 ### 再点击确认，静待安装完成
 
