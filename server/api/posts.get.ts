@@ -78,7 +78,9 @@ export default defineEventHandler(async (event) => {
   }
 
   if (!config.notionToken) {
-    console.error("ERROR: Notion API token is not configured");
+    if (process.env.NODE_ENV !== 'development') {
+      console.error("ERROR: Notion API token is not configured");
+    }
     throw createError({
       statusCode: 500,
       statusMessage: "Notion API token is not configured",
@@ -89,7 +91,9 @@ export default defineEventHandler(async (event) => {
   const databaseNames = config.notionDatabaseNames || [];
 
   if (databaseIds.length === 0) {
-    console.error("ERROR: No Notion databases configured");
+    if (process.env.NODE_ENV !== 'development') {
+      console.error("ERROR: No Notion databases configured");
+    }
     throw createError({
       statusCode: 500,
       statusMessage: "No Notion databases configured",
