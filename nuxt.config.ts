@@ -1,38 +1,65 @@
-import tailwindcss from "@tailwindcss/vite";
-
+// https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-    compatibilityDate: '2025-07-15',
-    devtools: { enabled: true },
-    ssr: true,
-    css: ['./app/assets/css/main.css'],
-    fonts: {
-        defaults: {
-            weights: [400],
-            styles: ['normal', 'italic'],
-            subsets: ['cyrillic-ext', 'cyrillic', 'greek-ext', 'greek', 'vietnamese', 'latin-ext', 'latin'],
-        },
-        providers: { google: false, googleicons: false }
+  modules: [
+    '@nuxt/ui',
+    '@nuxt/content',
+    '@nuxt/image',
+    '@nuxt/icon',
+  ],
+
+  devtools: { enabled: true },
+
+  app: {
+    head: {
+      charset: 'utf-8',
+      viewport: 'width=device-width, initial-scale=1',
+      title: '无趣',
     },
-    vite: {
-        plugins: [tailwindcss(),],
-    },
-    modules: ['@nuxt/icon', '@nuxt/ui', '@nuxt/fonts', '@nuxt/content', '@nuxt/image',],
-    content: {
-        build: {
-            markdown: {
-                highlight: {
-                    theme: {
-                        // Default theme (same as single string)
-                        default: 'github-light', // Theme used if `html.dark`
-                        dark: 'github-dark', // Theme used if `html.sepia`
-                        sepia: 'monokai'
-                    }
-                }
-            }
+    pageTransition: { name: 'page', mode: 'out-in' },
+    layoutTransition: { name: 'layout', mode: 'out-in' },
+  },
+
+  css: ['~/assets/css/main.css'],
+
+  colorMode: {
+    preference: 'system',
+    fallback: 'dark',
+    classSuffix: '',
+  },
+
+  content: {
+    build: {
+      markdown: {
+        toc: {
+          depth: 3,
+          searchDepth: 3,
         },
-        database: {
-            type: 'libsql',
-            url: 'file:/tmp/content.db',
-        }
+        highlight: {
+          theme: {
+            default: 'github-light',
+            dark: 'github-dark',
+          },
+          langs: ['python', 'javascript', 'typescript', 'vue', 'html', 'css', 'bash', 'json', 'yaml', 'markdown'],
+        },
+      },
+    },
+    database: {
+      type: 'libsql',
+      url: 'file:/tmp/content.db',
     }
+  },
+
+  runtimeConfig: {
+    notionToken: process.env.NOTION_TOKEN,
+    notionDatabaseIds: process.env.NOTION_DATABASE_IDS?.split(',') || [],
+    notionDatabaseNames: process.env.NOTION_DATABASE_NAMES?.split(',') || [],
+  },
+
+  compatibilityDate: '2025-03-17',
+
+  // 禁用 sourcemap 以避免 Tailwind CSS 警告
+  sourcemap: {
+    server: false,
+    client: false,
+  },
 })

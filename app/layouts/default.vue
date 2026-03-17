@@ -5,6 +5,7 @@ const author = '无趣'
 const items = ref([
   {label: 'Home', to: '/', icon: 'mdi-light:home'},
   {label: 'article', to: '/article', icon: 'mdi-light:book'},
+  {label: 'notion', to: '/notion', icon: 'mdi:pencil'},
   {label: 'about', to: '/about', icon: 'mdi-light:account'}
 ])
 
