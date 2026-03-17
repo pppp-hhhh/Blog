@@ -67,8 +67,16 @@ async function withConcurrencyLimit<T>(
 
 export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig();
+  
+  // 详细日志
+  console.log("API /api/posts called");
+  console.log("NOTION_TOKEN exists:", !!config.notionToken);
+  console.log("NOTION_TOKEN length:", config.notionToken?.length || 0);
+  console.log("NOTION_DATABASE_IDS:", config.notionDatabaseIds);
+  console.log("NOTION_DATABASE_NAMES:", config.notionDatabaseNames);
 
   if (!config.notionToken) {
+    console.error("ERROR: Notion API token is not configured");
     throw createError({
       statusCode: 500,
       statusMessage: "Notion API token is not configured",
@@ -79,6 +87,7 @@ export default defineEventHandler(async (event) => {
   const databaseNames = config.notionDatabaseNames || [];
 
   if (databaseIds.length === 0) {
+    console.error("ERROR: No Notion databases configured");
     throw createError({
       statusCode: 500,
       statusMessage: "No Notion databases configured",
@@ -89,6 +98,7 @@ export default defineEventHandler(async (event) => {
   const cacheKey = databaseIds.join(',');
   const cached = cache.get(cacheKey);
   if (cached) {
+    console.log("Returning cached data");
     return cached;
   }
 
@@ -104,9 +114,11 @@ export default defineEventHandler(async (event) => {
         const dbName = databaseNames[i] || `Database ${i + 1}`;
         
         try {
+          console.log(`Fetching from database: ${dbName} (${dbId})`);
           const response = await notion.dataSources.query({
             data_source_id: dbId,
           });
+          console.log(`Found ${response.results.length} pages in ${dbName}`);
 
           // 限制并发数获取 blocks
           return await withConcurrencyLimit(
@@ -136,7 +148,7 @@ export default defineEventHandler(async (event) => {
                   date: dateProp?.date?.start || null,
                   databaseId: dbId,
                   databaseName: dbName,
-                  previewBlocks: blocks.results,
+                  previewBlocks: (blocks as any).results,
                 };
               } catch (error) {
                 console.warn(`Failed to fetch blocks for page ${(page as any).id}:`, error);
@@ -167,6 +179,8 @@ export default defineEventHandler(async (event) => {
       return new Date(b.date).getTime() - new Date(a.date).getTime();
     });
 
+    console.log(`Total posts fetched: ${flattenedPosts.length}`);
+
     // 存入缓存
     cache.set(cacheKey, flattenedPosts);
 
@@ -175,7 +189,7 @@ export default defineEventHandler(async (event) => {
     console.error("Notion API Error:", error);
     throw createError({
       statusCode: 500,
-      statusMessage: "Failed to fetch Notion data",
+      statusMessage: `Failed to fetch Notion data: ${error.message}`,
     });
   }
 });

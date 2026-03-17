@@ -15,8 +15,9 @@ export default defineNuxtConfig({
       viewport: 'width=device-width, initial-scale=1',
       title: '无趣',
     },
-    pageTransition: { name: 'page', mode: 'out-in' },
-    layoutTransition: { name: 'layout', mode: 'out-in' },
+    // 禁用页面过渡动画，避免切换卡顿
+    // pageTransition: { name: 'page', mode: 'out-in' },
+    // layoutTransition: { name: 'layout', mode: 'out-in' },
   },
 
   css: ['~/assets/css/main.css'],

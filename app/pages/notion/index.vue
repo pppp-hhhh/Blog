@@ -1,9 +1,9 @@
 <script setup>
-// 使用 useFetch 的 key 和 lazy 选项优化加载
-const { data: posts, error, pending, refresh } = await useFetch('/api/posts', {
+// 使用客户端获取数据，避免 SSR 阻塞
+const { data: posts, error, pending, refresh } = useFetch('/api/posts', {
   key: 'notion-posts',
-  lazy: false,
-  server: true,
+  lazy: true,
+  server: false,
   default: () => [],
   transform: (data) => data || []
 })
@@ -41,7 +41,6 @@ const blockCache = new Map()
 function renderBlock(block) {
   if (!block) return null
   
-  // 使用 block id 作为缓存 key
   const cacheKey = block.id || JSON.stringify(block)
   if (blockCache.has(cacheKey)) {
     return blockCache.get(cacheKey)
@@ -110,24 +109,6 @@ function getPreviewBlocks(post) {
     return []
   }
   return post.previewBlocks.map(renderBlock).filter(b => b && b.content)
-}
-
-// 预加载详情页数据 - 使用 Set 避免重复
-const prefetchedPosts = new Set()
-
-function prefetchPost(postId) {
-  if (prefetchedPosts.has(postId) || typeof document === 'undefined') return
-  
-  prefetchedPosts.add(postId)
-  const link = document.createElement('link')
-  link.rel = 'prefetch'
-  link.href = `/api/posts/${postId}`
-  link.as = 'fetch'
-  link.onload = () => {
-    // 加载完成后从 DOM 移除
-    link.remove()
-  }
-  document.head.appendChild(link)
 }
 </script>
 
@@ -209,7 +190,6 @@ function prefetchPost(postId) {
           :key="post.id"
           :to="`/post/${post.id}`"
           class="group bg-white dark:bg-gray-800 rounded-xl overflow-hidden transition-all duration-200 shadow-sm hover:shadow-md border border-gray-200 dark:border-gray-700 flex flex-col"
-          @mouseenter="prefetchPost(post.id)"
         >
           <!-- 内容区域 -->
           <div class="flex-1 p-5 space-y-2.5">
