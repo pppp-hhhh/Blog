@@ -26,3 +26,6 @@ logs
 
 .vercel
 .env*.local
+
+# Trae specs
+.trae/specs/

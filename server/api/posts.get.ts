@@ -68,12 +68,14 @@ async function withConcurrencyLimit<T>(
 export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig();
   
-  // 详细日志
-  console.log("API /api/posts called");
-  console.log("NOTION_TOKEN exists:", !!config.notionToken);
-  console.log("NOTION_TOKEN length:", config.notionToken?.length || 0);
-  console.log("NOTION_DATABASE_IDS:", config.notionDatabaseIds);
-  console.log("NOTION_DATABASE_NAMES:", config.notionDatabaseNames);
+  // 详细日志（仅开发环境）
+  if (process.env.NODE_ENV === 'development') {
+    console.log("API /api/posts called");
+    console.log("NOTION_TOKEN exists:", !!config.notionToken);
+    console.log("NOTION_TOKEN length:", config.notionToken?.length || 0);
+    console.log("NOTION_DATABASE_IDS:", config.notionDatabaseIds);
+    console.log("NOTION_DATABASE_NAMES:", config.notionDatabaseNames);
+  }
 
   if (!config.notionToken) {
     console.error("ERROR: Notion API token is not configured");
