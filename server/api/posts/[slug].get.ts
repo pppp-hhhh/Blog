@@ -1,36 +1,6 @@
 import { Client } from "@notionhq/client";
 import type { PageObjectResponse, BlockObjectResponse } from "@notionhq/client/build/src/api-endpoints";
-
-// 带 TTL 的缓存
-interface CacheEntry<T> {
-  data: T;
-  timestamp: number;
-}
-
-class TTLCache<T> {
-  private cache = new Map<string, CacheEntry<T>>();
-  private readonly ttl: number;
-
-  constructor(ttlMs: number) {
-    this.ttl = ttlMs;
-  }
-
-  get(key: string): T | null {
-    const entry = this.cache.get(key);
-    if (!entry) return null;
-    
-    if (Date.now() - entry.timestamp > this.ttl) {
-      this.cache.delete(key);
-      return null;
-    }
-    
-    return entry.data;
-  }
-
-  set(key: string, data: T): void {
-    this.cache.set(key, { data, timestamp: Date.now() });
-  }
-}
+import { TTLCache } from "../../utils/cache";
 
 const cache = new TTLCache<{ meta: any; blocks: any[] }>(5 * 60 * 1000);
 
