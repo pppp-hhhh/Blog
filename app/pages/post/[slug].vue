@@ -102,6 +102,22 @@ function renderBlock(block) {
         content: block.toggle?.rich_text?.map(t => t.plain_text).join('') || '',
         isToggle: true
       }
+    case 'table':
+      return {
+        component: 'table',
+        props: { class: 'w-full border-collapse my-6 text-sm' },
+        isTable: true,
+        hasColumnHeader: block.table?.has_column_header || false,
+        hasRowHeader: block.table?.has_row_header || false,
+        children: block.children || []
+      }
+    case 'table_row':
+      return {
+        component: 'tr',
+        props: { class: 'border-b border-gray-200 dark:border-gray-700' },
+        isTableRow: true,
+        cells: block.table_row?.cells || []
+      }
     default:
       return null
   }
@@ -162,17 +178,14 @@ function renderBlock(block) {
       <!-- 文章内容 -->
       <article v-else class="bg-white/80 dark:bg-gray-800/80 backdrop-blur rounded-3xl shadow-2xl overflow-hidden border border-gray-100 dark:border-gray-700">
         <!-- 文章头部 -->
-        <div class="relative bg-gradient-to-br from-primary-600 via-purple-600 to-pink-600 px-8 py-16 overflow-hidden">
-          <!-- 装饰背景 -->
-          <div class="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg%20width%3D%2260%22%20height%3D%2260%22%20viewBox%3D%220%200%2060%2060%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cg%20fill%3D%22none%22%20fill-rule%3D%22evenodd%22%3E%3Cg%20fill%3D%22%23ffffff%22%20fill-opacity%3D%220.1%22%3E%3Cpath%20d%3D%22M36%2034v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6%2034v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6%204V0H4v4H0v2h4v4h2V6h4V4H6z%22%2F%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E')] opacity-20"></div>
-          
+        <div class="relative bg-gray-50 dark:bg-gray-900/50 px-8 py-12 overflow-hidden border-b border-gray-200 dark:border-gray-700">
           <div class="relative text-center">
-            <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight">
+            <h1 class="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white mb-4 leading-tight">
               {{ data?.meta?.title }}
             </h1>
-            <div class="flex items-center justify-center gap-6 text-primary-100">
-              <span v-if="data?.meta?.date" class="flex items-center gap-2 bg-white/20 backdrop-blur rounded-full px-4 py-2">
-                <Icon name="i-heroicons-calendar" class="w-5 h-5" />
+            <div class="flex items-center justify-center gap-6 text-gray-500 dark:text-gray-400">
+              <span v-if="data?.meta?.date" class="flex items-center gap-2 text-sm">
+                <Icon name="i-heroicons-calendar" class="w-4 h-4" />
                 {{ new Date(data.meta.date).toLocaleDateString('zh-CN', { year: 'numeric', month: 'long', day: 'numeric' }) }}
               </span>
             </div>
@@ -217,6 +230,43 @@ function renderBlock(block) {
                   {{ rendered.content }}
                 </summary>
               </details>
+            </template>
+
+            <!-- 表格块 -->
+            <template v-else-if="rendered.isTable">
+              <div class="overflow-x-auto my-6">
+                <table class="w-full border-collapse text-sm border border-gray-200 dark:border-gray-700 rounded-lg">
+                  <thead v-if="rendered.hasColumnHeader && rendered.children.length > 0">
+                    <tr class="bg-gray-50 dark:bg-gray-800">
+                      <th
+                        v-for="(cell, cellIndex) in rendered.children[0]?.table_row?.cells || []"
+                        :key="cellIndex"
+                        class="px-4 py-3 text-left font-semibold text-gray-700 dark:text-gray-300 border-b border-gray-200 dark:border-gray-700"
+                      >
+                        {{ cell?.map(t => t.plain_text).join('') || '' }}
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr
+                      v-for="(row, rowIndex) in rendered.hasColumnHeader ? rendered.children.slice(1) : rendered.children"
+                      :key="rowIndex"
+                      class="border-b border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors"
+                    >
+                      <td
+                        v-for="(cell, cellIndex) in row?.table_row?.cells || []"
+                        :key="cellIndex"
+                        :class="[
+                          'px-4 py-3 text-gray-700 dark:text-gray-300',
+                          rendered.hasRowHeader && cellIndex === 0 ? 'font-semibold bg-gray-50 dark:bg-gray-800/50' : ''
+                        ]"
+                      >
+                        {{ cell?.map(t => t.plain_text).join('') || '' }}
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </template>
 
             <!-- 普通块 -->

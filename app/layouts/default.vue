@@ -56,16 +56,38 @@ onMounted(() => {
   : '-top-[120%] opacity-0 pointer-events-none rounded-xl shadow-lg'
 ]"
         :style="{
-      width: headerState === 0 ? '75%' : '50%',
+      width: headerState === 0 ? '100%' : '50%',
       opacity: headerState === 2 ? 0 : 1
     }"
+        class="md:!w-[75%]"
 
         title="无趣"
         to="/"
+        :toggle="false"
     >
-      <UNavigationMenu :items="items"/>
+      <UNavigationMenu :items="items" class="hidden lg:flex"/>
       <template #right>
         <UColorModeSwitch/>
+        <!-- 移动端/平板菜单按钮 -->
+        <UPopover class="lg:hidden" :ui="{ content: 'bg-white/90 dark:bg-gray-800/90 backdrop-blur-md rounded-xl shadow-lg border border-gray-200/50 dark:border-gray-700/50 p-2 min-w-[160px]' }">
+          <UButton
+            icon="i-heroicons-bars-3"
+            color="neutral"
+            variant="ghost"
+          />
+          <template #content>
+            <UNavigationMenu
+              :items="items"
+              orientation="vertical"
+              class="gap-0.5"
+              :ui="{
+                link: 'py-2 px-3 rounded-lg hover:bg-gray-100/70 dark:hover:bg-gray-700/70 transition-colors flex items-center gap-3 text-gray-700 dark:text-gray-300 text-sm whitespace-nowrap',
+                linkLeadingIcon: 'w-4 h-4 text-gray-500 dark:text-gray-400',
+                linkLabel: 'font-medium'
+              }"
+            />
+          </template>
+        </UPopover>
       </template>
     </UHeader>
   </div>
