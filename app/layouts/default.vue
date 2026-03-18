@@ -51,15 +51,13 @@ onMounted(() => {
     <UHeader
         :class="[
   'fixed z-50 transition-all duration-300 ease-out',
-  headerState === 0 ? 'top-0 rounded-none shadow-none'
-  : headerState === 1 ? 'top-1 rounded-xl shadow-lg'
-  : '-top-[120%] opacity-0 pointer-events-none rounded-xl shadow-lg'
+  headerState === 0 ? 'top-0 rounded-none shadow-none w-full md:w-[75%]' :
+  headerState === 1 ? 'top-1 rounded-xl shadow-lg w-[50%]' :
+  '-top-[120%] opacity-0 pointer-events-none rounded-xl shadow-lg'
 ]"
         :style="{
-      width: headerState === 0 ? '100%' : '50%',
       opacity: headerState === 2 ? 0 : 1
     }"
-        class="md:!w-[75%]"
 
         title="无趣"
         to="/"
