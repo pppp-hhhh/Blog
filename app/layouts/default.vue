@@ -9,34 +9,36 @@ const items = ref([
   {label: 'about', to: '/about', icon: 'mdi-light:account'}
 ])
 
-// 0 = 显示, 1 = 中间收起, 2 = 完全收起
-const headerState = ref(0)
+// 菜单栏的上滑偏移量
+const headerOffset = ref(0)
 let lastScrollY = 0
+let lastTimestamp = 0
 
 onMounted(() => {
   const handleScroll = () => {
     const currentScrollY = window.scrollY
-    const maxScrollY = document.documentElement.scrollHeight - window.innerHeight - 10
+    const currentTimestamp = Date.now()
+    
+    // 计算滚动速度（像素/毫秒）
+    const timeDiff = currentTimestamp - lastTimestamp
+    const scrollDiff = Math.abs(currentScrollY - lastScrollY)
+    const scrollSpeed = timeDiff > 0 ? scrollDiff / timeDiff : 0
+    
+    // 根据滚动速度调整上滑速度，使响应更加灵敏
+    const speedFactor = Math.min(scrollSpeed * 15, 15) // 增加速度因子和最大限制
+    
     if (currentScrollY > lastScrollY) {
-      // 向下滚动
-      if (currentScrollY > 50 && currentScrollY <= 150) {
-        headerState.value = 1
-      } else if (currentScrollY >= maxScrollY) {
-        headerState.value = 2 // 到底部才收起
-      }
+      // 向下滚动，增加偏移量
+      // 使用缓动效果，使动画更加自然
+      headerOffset.value = Math.min(headerOffset.value + speedFactor * 0.8, 100)
     } else {
-      if (currentScrollY <= 0) {
-        headerState.value = 0
-      } else if (currentScrollY <= 150) {
-        headerState.value = 1  // 向上滚动时，只要位置 <= 150 就设为状态1
-      } else {
-        // 如果在中间位置向上滚动，确保状态不会停留在2
-        if (headerState.value === 2 && currentScrollY < maxScrollY) {
-          headerState.value = 1
-        }
-      }
+      // 向上滚动，减少偏移量
+      // 向上滚动时恢复速度更快，使用更强的缓动
+      headerOffset.value = Math.max(headerOffset.value - (speedFactor * 2.5), 0)
     }
+    
     lastScrollY = currentScrollY
+    lastTimestamp = currentTimestamp
   }
 
   window.addEventListener('scroll', handleScroll)
@@ -50,13 +52,13 @@ onMounted(() => {
   <div class="flex justify-center">
     <UHeader
         :class="[
-  'fixed z-50 transition-all duration-300 ease-out',
-  headerState === 0 ? 'top-0 rounded-none shadow-none w-full md:w-[75%]' :
-  headerState === 1 ? 'top-1 rounded-xl shadow-lg w-[50%]' :
-  '-top-[120%] opacity-0 pointer-events-none rounded-xl shadow-lg'
+  'fixed z-50 transition-all duration-200 ease-in-out w-full md:w-[75%]'
 ]"
         :style="{
-      opacity: headerState === 2 ? 0 : 1
+      transform: `translateY(-${headerOffset}%)`,
+      opacity: 1 - (headerOffset / 200),
+      borderRadius: '1rem',
+      boxShadow: headerOffset > 10 ? '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)' : 'none'
     }"
 
         title="无趣"
